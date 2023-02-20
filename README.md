@@ -1,4 +1,4 @@
-#YUMMY RECIPES APP
+# YUMMY RECIPES APP
 
 This is a small full stack application project that enables users to create accounts, create recipes and view different recipes fronm the public.
 
