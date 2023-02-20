@@ -20,6 +20,9 @@ npm run dev
 
 ## Usage
 Open the app in your browser at 
+
 Create an account or log in if you already have one
+
 Create a recipe or view public recipes
+
 Enjoy the app!
