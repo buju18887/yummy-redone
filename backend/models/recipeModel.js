@@ -3,8 +3,11 @@ const mongoose = require('mongoose')
 const recipeSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: 'User'
+    },
+    recipe_img: {
+        type: String,
+        required: true,
     },
     recipe_name: {
         type: String,

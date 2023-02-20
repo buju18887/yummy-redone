@@ -1,22 +1,38 @@
-import { useDispatch } from 'react-redux'
-import { deleteRecipe } from '../features/recipe/recipeSlice'
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRecipe, getOne } from "../features/recipe/recipeSlice";
+import { FaClock } from "react-icons/fa";
 
-function RecipeItem({recipe}) {
-  const dispatch = useDispatch()
+function RecipeItem({ recipe }) {
+  const dispatch = useDispatch();
+  const {user} = useSelector((state) => state.auth)
 
   const onClick = () => {
-    dispatch(deleteRecipe(recipe._id))
-  } 
+    dispatch(deleteRecipe(recipe._id));
+  };
 
   return (
-    <div className='bg-yellow-400 relative my-3 py-5 rounded-lg'>
-      <div>{new Date(recipe.createdAt).toLocaleString('en-US')}</div>
-      <h2 className='text-xl font-bold'>{recipe.recipe_name}</h2>
-      <button onClick={onClick} className='absolute cursor-pointer top-3 right-4 font-extrabold text-red-900'>
-        X
-      </button>
+    <div className="card">
+      <a href={`/singlerecipe/${recipe._id}`}>
+        <img
+          src={recipe.recipe_img}
+          className="h-56 object-cover w-full"
+          alt={recipe.recipe_name}
+        />
+      </a>
+      <div className="m-2 flex justify-between">
+        <div>
+        <span className="font-bold text-lg">{recipe.recipe_name}</span>
+        <span className="block text-gray-500 text-sm">Recipe by {user.name}</span>
+        </div>
+        <div>
+      <button className="text-red-700 font-extrabold cursor-pointer" onClick={onClick}>Delete</button>
+        </div>
+      </div>
+      <div className="badge">
+        <FaClock /> {recipe.cook_time} MIN
+      </div>
     </div>
-  )
+  );
 }
 
-export default RecipeItem
+export default RecipeItem;

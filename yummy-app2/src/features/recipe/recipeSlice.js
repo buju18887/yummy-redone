@@ -28,13 +28,32 @@ export const createRecipe = createAsyncThunk(
     }
 )
 
-//get recipes
+//get all recipes in database
+export const getAll = createAsyncThunk(
+  'recipe/getAll',
+  async(_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token  
+      return await recipeService.getAll(token)
+    } catch (error) {
+      const message =
+      (error.response &&
+      error.response.data &&
+      error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+//get recipes created by user
 export const getRecipe = createAsyncThunk(
-    'recipe/getAll',
-    async(recipeData, thunkAPI) => {
+    'recipe/getForUser',
+    async(UserId, thunkAPI) => {
         try {
            const token = thunkAPI.getState().auth.user.token  
-           return await recipeService.getRecipe(token)
+           return await recipeService.getRecipe(UserId, token)
         } catch (error) {
         const message =
         (error.response &&
@@ -45,6 +64,24 @@ export const getRecipe = createAsyncThunk(
       return thunkAPI.rejectWithValue(message)
         }
     }
+)
+
+export const getOne = createAsyncThunk(
+  'recipe/getOne',
+  async(recipeId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await recipeService.getOne(recipeId, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
 )
 
 //update recipes
@@ -99,9 +136,22 @@ export const recipeSlice = createSlice({
           .addCase(createRecipe.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.recipes.push(action.payload)
+            state.recipe.push(action.payload)
           })
           .addCase(createRecipe.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+          })
+          .addCase(getAll.pending, (state) => {
+            state.isLoading = true
+          })
+          .addCase(getAll.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.recipe = action.payload
+          })
+          .addCase(getAll.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
@@ -119,6 +169,19 @@ export const recipeSlice = createSlice({
             state.isError = true
             state.message = action.payload
           })
+          .addCase(getOne.pending, (state) => {
+            state.isLoading = true
+          })
+          .addCase(getOne.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.recipe = action.payload
+          })
+          .addCase(getOne.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+          })
           .addCase(updateRecipe.pending, (state) => {
             state.isLoading = true
           })
@@ -126,7 +189,7 @@ export const recipeSlice = createSlice({
             state.isLoading = false
             state.isSuccess = true
             state.recipe = state.recipe.filter(
-              (recipe) => recipe._id !== action.payload.id
+              (recipe) => recipe._id === action.payload.id
             )
           })
           .addCase(updateRecipe.rejected, (state, action) => {

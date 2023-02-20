@@ -1,35 +1,81 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { reset } from "../features/auth/authSlice";
+import {
+  FaInstagram,
+  FaMortarPestle,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+
+    dispatch(reset());
+  });
+
   return (
     <>
-     <main className="bg-[url('/background.jpg')] bg-cover bg-no-repeat">
-        <header className="flex justify-between">
-            <div>
-                <img src="/logo 3.png" alt="Yummy" className="w-36 h-16 rounded-md ml-8 mt-5"/>
+      <div className=" h-full">
+        <div className="w-1/2 absolute left-0 p-4">
+          <div className="flex text-yellow-600 text-xl mt-5 pl-4 font-extrabold">
+            <FaMortarPestle />
+            YUMMY
+          </div>
+          <div className="mt-32">
+            <h1 className="text-teal-700 text-4xl font-extrabold animate-bounce an">
+              Find Your Next Favorite Meal: Yummy Recipes!
+            </h1>
+            <p className="text-teal-600 py-10 pl-0 pr-20 font-medium text-xl">
+              Discover handcrafted recipes for every taste, from classic to
+              contemporary. Join our foodie haven for a delightful meal-making
+              experience.Let's create memorable meals together in the kitchen.
+            </p>
+            <div className="flex justify-start gap-x-5">
+              <a href="/signup" className="btn">
+                SIGNUP
+              </a>
+              <a href="/login" className="btn">
+                LOGIN
+              </a>
             </div>
-            <ul className="mt-5 mr-8">
-                <li className="pt-5">
-                <a href="#" className="text-2xl font-extrabold font-burtons px-4 py-2 mt-10 text-yellow-500">Explore</a>
-                </li>
-            </ul>
-        </header>
-        <div className="mx-auto mt-32 w-1/2 h-1/3 whitespace-normal items-center">
-            <h1 className="text-6xl font-bold italic text-center leading-relaxed text-white">Yummy recipes from all around the world</h1>
-            <h6 className="italic text-2xl text-center text-white">Create, Review and Share different recipes of your choice in the food community</h6>
+            <div className="flex justify-start mt-10 ml-1 gap-x-8">
+              <div className="card">
+                <img
+                  src="/idk.jpeg"
+                  alt="idk"
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+              <div className="card">
+                <img
+                  src="/fries.jpeg"
+                  alt="idk"
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex justify-evenly mt-28">
-        <a href="/signup" className="px-4 py-2 rounded-md bg-yellow-500 font-semibold ">SignUp</a>
-        <a href="/login" className="px-4 py-2 rounded-md bg-yellow-500 font-semibold ">Login</a>
-        <a href="/" className="px-4 py-2 rounded-md bg-yellow-500 font-semibold ">About</a>
-    </div>
-    <footer className="flex justify-center items-center mt-20 pb-2">
-        <p className="text-yellow-300">&copy; <span id="date" className="font-semibold">2023</span><span className="font-semibold">
-            YummyRecipes
-          </span></p>
-    </footer>
-     </main>
+        <div className=" absolute w-1/2 right-0">
+          <img src="/homepageimg.png" alt="" />
+          <div className="absolute top-0 right-0 text-secondary-100 flex justify-end text-2xl mt-5 mr-5 p-4 gap-x-5">
+            <FaTwitter />
+            <FaYoutube />
+            <FaInstagram />
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

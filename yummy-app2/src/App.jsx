@@ -6,9 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import MyRecipe from './pages/MyRecipes'
-import LikedRecipe from './pages/LikedRecipes'
 import CreateRecipe from './pages/CreateRecipe'
-import Drinks from './/pages/Drinks'
 import SingleRecipe from './pages/SingleRecipe'
 import { Provider } from 'react-redux'
 import store from './app/store'
@@ -25,10 +23,8 @@ function App() {
         <Route path='/signup' element={<Signup />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/myrecipes' element={<MyRecipe />}/>
-        <Route path='/likedrecipes' element={<LikedRecipe />}/>
         <Route path='/createrecipe' element={<CreateRecipe />}/>
-        <Route path='/drinks' element={<Drinks />}/>
-        <Route path='/singlerecipe' element={<SingleRecipe />}/>
+        <Route path='/singlerecipe/:id' element={<SingleRecipe />}/>
       </Routes>
     </Router>
     <ToastContainer />

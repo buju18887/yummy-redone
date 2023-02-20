@@ -14,7 +14,7 @@ const registerUser = asyncHandler(async(req, res) => {
     const userExists = await User.findOne({email})
 
     if(userExists) {
-        res.status(400)
+        res.status(401)
         throw new Error('User already exists')
     }
 
@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async(req, res) => {
             token: generateToken(user._id)
         })
     } else {
-        res.status(400)
+        res.status(404)
         throw new Error('Invalid User data')
     }
 
@@ -51,7 +51,9 @@ const loginUser = asyncHandler(async(req, res) => {
     //check for user email
     const user = await User.findOne({email})
 
-    if(user && (await bcrypt.compare(password, user.password))) {
+    const userPassword = await bcrypt.compare(password, user.password)
+
+    if(user && userPassword) {
         res.json({
             _id: user.id,
             name: user.name,

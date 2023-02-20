@@ -1,86 +1,129 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require("express-async-handler");
 
-const Recipe = require('../models/recipeModel')
+const Recipe = require("../models/recipeModel");
 
-const getRecipe = asyncHandler(async(req, res) => {
-   const recipes = await Recipe.find({user: req.user.id})
-   res.status(200).json(recipes)
-})
+const getAll = asyncHandler(async (req, res) => {
+  const recipes = await Recipe.find();
+  res.status(200).json(recipes);
+});
 
-const setRecipe = asyncHandler(async(req, res) => {
-   const { recipe_name, description, prep_time, cook_time, servings, instructions, ingredients, tools} = req.body
+const getRecipe = asyncHandler(async (req, res) => {
+  const recipes = await Recipe.find({ user: req.user.id });
+  res.status(200).json(recipes);
+});
 
-   if( !recipe_name || !description || !prep_time || !cook_time || !servings || !instructions || !ingredients || !tools) {
-    res.status(400)
-    throw new Error('Please fill the required fields')
-   }
+const getOneRecipe = asyncHandler(async (req, res) => {
+  const oneRecipe = await Recipe.findById(req.params.id);
 
-   const recipe = await Recipe.create({
-      recipe_name,
-      description,
-      prep_time,
-      cook_time,
-      servings,
-      instructions,
-      ingredients,
-      tools,
-      user: req.user.id
-   })
+  if (!oneRecipe) {
+    res.status(404);
+    throw new Error("Recipe not found");
+  }
 
-   res.status(200).json(recipe)
-})
+  res.status(200).json(oneRecipe);
+});
 
-const updateRecipe = asyncHandler(async(req, res) => {
-   const recipe = await Recipe.findById(req.params.id)
+const setRecipe = asyncHandler(async (req, res) => {
+  const {
+    recipe_img,
+    recipe_name,
+    description,
+    prep_time,
+    cook_time,
+    servings,
+    instructions,
+    ingredients,
+    tools,
+  } = req.body;
 
-   if(!recipe) {
-    res.status(400)
-    throw new Error('Recipe not found')
-   }
+  if (
+    !recipe_img ||
+    !recipe_name ||
+    !description ||
+    !prep_time ||
+    !cook_time ||
+    !servings ||
+    !instructions ||
+    !ingredients ||
+    !tools
+  ) {
+    res.status(400);
+    throw new Error("Please fill the required fields");
+  }
 
-   //checking user
-   if(!req.user) {
-    res.status(401)
-    throw new Error('User not found')
-   }
+  const recipe = await Recipe.create({
+    recipe_img,
+    recipe_name,
+    description,
+    prep_time,
+    cook_time,
+    servings,
+    instructions,
+    ingredients,
+    tools,
+    user: req.user.id,
+  });
 
-   //matching user if logged in
-   if(recipe.user.toString() !== req.user.id) {
-    res.status(400)
-    throw new Error('User not authorized')
-   }
+  res.status(200).json(recipe);
+});
 
-   const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, {new: true})
-   res.status(200).json(updatedRecipe)
-})
+const updateRecipe = asyncHandler(async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id);
 
-const deleteRecipe = asyncHandler(async(req, res) => {
-    const recipe = await Recipe.findById(req.params.id)
+  if (!recipe) {
+    res.status(400);
+    throw new Error("Recipe not found");
+  }
 
-    if(!recipe) {
-     res.status(400)
-     throw new Error('Recipe not found')
-    }
- 
-    //checking user
-    if(!req.user) {
-     res.status(401)
-     throw new Error('User not found')
-    }
- 
-    //matching user if logged in
-    if(recipe.user.toString() !== req.user.id) {
-     res.status(400)
-     throw new Error('User not authorized')
-    }
+  //checking user
+  if (!req.user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
 
-    await Recipe.remove(recipe)
-    res.status(200).json({id: req.params.id})
-})
+  //matching user if logged in
+  if (recipe.user.toString() !== req.user.id) {
+    res.status(404);
+    throw new Error("User not authorized");
+  }
+
+  const updatedRecipe = await Recipe.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  res.status(200).json(updatedRecipe);
+});
+
+const deleteRecipe = asyncHandler(async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id);
+
+  if (!recipe) {
+    res.status(400);
+    throw new Error("Recipe not found");
+  }
+
+  //checking user
+  if (!req.user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
+
+  //matching user if logged in
+  if (recipe.user.toString() !== req.user.id) {
+    res.status(404);
+    throw new Error("User not authorized");
+  }
+
+  await Recipe.deleteOne(recipe);
+  res.status(200).json({ id: req.params.id });
+});
 
 module.exports = {
-    getRecipe,
-    setRecipe,
-    updateRecipe,
-    deleteRecipe
-}
+  getAll,
+  getRecipe,
+  getOneRecipe,
+  setRecipe,
+  updateRecipe,
+  deleteRecipe,
+};
