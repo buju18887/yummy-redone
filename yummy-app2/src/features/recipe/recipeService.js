@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5300/api/v1/recipe/";
+const API_URL = "https://kind-tuna-tweed-jacket.cyclic.app/api/v1/recipe/";
 
 //create recipe
 const createRecipe = async (recipeData, token) => {
