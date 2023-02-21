@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { reset } from "../features/auth/authSlice";
-import { getOne, getRecipe } from "../features/recipe/recipeSlice";
+import { getRecipe } from "../features/recipe/recipeSlice";
 import RecipeItem from "../components/RecipeItem";
 import Spinner from "../components/Spinner";
 
@@ -30,8 +30,8 @@ const MyRecipes = () => {
     };
   }, [user, isError, message, navigate, dispatch]);
 
-  if(isLoading){
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (

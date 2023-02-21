@@ -13,7 +13,7 @@ const SingleRecipe = () => {
   const dispatch = useDispatch();
   const { user, isError, message } = useSelector((state) => state.auth);
   const { recipe, isLoading } = useSelector((state) => state.recipe);
-  const {id} = useParams()
+  const { id } = useParams();
 
   useEffect(() => {
     if (isError) {
@@ -32,8 +32,8 @@ const SingleRecipe = () => {
     };
   }, [dispatch, isError, message, navigate, user, id]);
 
-  if(isLoading) {
-    return <Spinner />
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (

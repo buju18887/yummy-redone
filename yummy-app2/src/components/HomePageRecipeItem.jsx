@@ -1,7 +1,6 @@
 import { FaClock } from "react-icons/fa";
 
 function HomePageRecipeItem({ recipe }) {
-
   return (
     <div className="card">
       <a href={`/singlerecipe/${recipe._id}`}>
@@ -13,8 +12,8 @@ function HomePageRecipeItem({ recipe }) {
       </a>
       <div className="m-2">
         <div>
-        <span className="font-bold text-lg">{recipe.recipe_name}</span>
-        <span className="block text-gray-500 text-sm">Recipe by user</span>
+          <span className="font-bold text-lg">{recipe.recipe_name}</span>
+          <span className="block text-gray-500 text-sm">Recipe by user</span>
         </div>
       </div>
       <div className="badge">

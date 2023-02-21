@@ -21,7 +21,7 @@ const CreateRecipe = () => {
     tools: "",
   });
 
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState("");
 
   const {
     recipe_img,
@@ -108,7 +108,7 @@ const CreateRecipe = () => {
     if (!formData.ingredients) {
       ingredientError = "This feild is required";
     }
-    
+
     if (!formData.tools) {
       toolsError = "This feild is required";
     }
@@ -386,5 +386,3 @@ const CreateRecipe = () => {
 };
 
 export default CreateRecipe;
-
-

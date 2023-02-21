@@ -49,7 +49,10 @@ const getOne = async (recipeId, token) => {
     },
   };
 
-  const response = await axios.get(API_URL + 'singlerecipe/' + recipeId, config);
+  const response = await axios.get(
+    API_URL + "singlerecipe/" + recipeId,
+    config
+  );
 
   return response.data;
 };

@@ -26,8 +26,8 @@ const Dashboard = () => {
     dispatch(getAll());
 
     return () => {
-      dispatch(reset())
-    }
+      dispatch(reset());
+    };
   }, [dispatch, navigate, isError, reset]);
 
   if (isLoading) {
